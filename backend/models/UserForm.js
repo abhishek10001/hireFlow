@@ -7,38 +7,23 @@ const userFormSchema = {
     $jsonSchema: {
       bsonType: 'object',
       required: [
-        'name',
-        'email',
-        'yearOfExperience',
-        'phone',
-        'cv'
+        'createdAt',
+        'updatedAt'
       ],
       properties: {
-        name: {
-          bsonType: 'string',
-          description: 'Name is required and must be a string',
-        },
-        email: {
-          bsonType: 'string',
-          description: 'Email is required and must be a string',
-        },
-        yearOfExperience: {
-          bsonType: 'string',
-          description: 'Year of Experience is required and must be a string',
-        },
-        phone: {
-          bsonType: 'string',
-          description: 'Phone is required and must be a string',
-        },
-        cv: {
-          bsonType: 'string',
-          description: 'CV is required and must be a string (Cloudinary URL)',
-        },
+        // Dynamic fields will be stored as they come from the form
+        // Only require timestamps
         createdAt: {
           bsonType: 'date',
+          description: 'Creation timestamp is required',
         },
         updatedAt: {
           bsonType: 'date',
+          description: 'Update timestamp is required',
+        },
+        cv: {
+          bsonType: 'string',
+          description: 'CV file URL (optional)',
         },
       },
     },

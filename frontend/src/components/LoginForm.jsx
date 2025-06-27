@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { AtSign, Lock, Eye, EyeOff, User, Mail } from 'lucide-react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const LoginForm = () => {
   const [activeTab, setActiveTab] = useState('login');
@@ -11,14 +13,37 @@ const LoginForm = () => {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    setIsLoading(false);
-    // Handle login/signup logic here
+    setError('');
+    setSuccess('');
+    try {
+      if (activeTab === 'login') {
+        const res = await axios.post('/api/hr/login', {
+          email: formData.email,
+          password: formData.password
+        });
+        if (res.data.success) {
+          setSuccess('Login successful!');
+          setTimeout(() => navigate('/dashboard'), 1000);
+        } else {
+          setError(res.data.error || 'Login failed');
+        }
+      } else {
+        // Simulate signup or implement real signup if needed
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        setSuccess('Signup successful!');
+      }
+    } catch (err) {
+      setError(err.response?.data?.error || 'Login failed');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleGoogleAuth = () => {
@@ -61,6 +86,8 @@ const LoginForm = () => {
         {activeTab === 'login' ? (
           // Login Tab
           <div className="space-y-4">
+            {error && <div className="text-red-400 text-sm font-medium">{error}</div>}
+            {success && <div className="text-green-400 text-sm font-medium">{success}</div>}
             {/* Email Login Form */}
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">

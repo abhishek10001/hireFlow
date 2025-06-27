@@ -20,22 +20,28 @@ const submitUserForm = async (req, res) => {
         uploadStream.end(req.file.buffer);
       });
     }
+    
     const db = await mongodb.connectToDatabase();
-    const form = {
-      name: req.body.name,
-      email: req.body.email,
-      yearOfExperience: req.body.yearOfExperience,
-      phone: req.body.phone,
-      cv: cvUrl,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
-    const resultDb = await db.collection(UserFormModel.userFormCollectionName).insertOne(form);
+    
+    // Create form object with all dynamic fields from req.body
+    const formData = { ...req.body };
+    
+    // Add file URL if file was uploaded
+    if (cvUrl) {
+      formData.cv = cvUrl;
+    }
+    
+    // Add timestamps
+    formData.createdAt = new Date();
+    formData.updatedAt = new Date();
+    
+    const resultDb = await db.collection(UserFormModel.userFormCollectionName).insertOne(formData);
 
     // Webhook logic is removed. The frontend will call the webhook directly.
 
-    res.status(201).json({ success: true, formId: resultDb.insertedId, formData: form });
+    res.status(201).json({ success: true, formId: resultDb.insertedId, formData: formData });
   } catch (error) {
+    console.error('Error submitting form:', error);
     res.status(500).json({ success: false, error: error.message });
   }
 };

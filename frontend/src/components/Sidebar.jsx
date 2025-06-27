@@ -10,8 +10,9 @@ import {
   ChevronLeft,
   ChevronRight,
   User,
-  Building,
-  Briefcase
+  Zap,
+  Briefcase,
+  Users
 } from 'lucide-react';
 
 const Sidebar = ({ isCollapsed, onToggleCollapse }) => {
@@ -29,13 +30,19 @@ const Sidebar = ({ isCollapsed, onToggleCollapse }) => {
       name: 'Form Builder',
       href: '/form-builder',
       icon: FileText,
-      description: 'Create application forms'
+      description: 'Create forms'
     },
     {
       name: 'Analytics',
       href: '/analytics',
       icon: BarChart3,
       description: 'Reports and insights'
+    },
+    {
+      name: 'Applicants',
+      href: '/applicants',
+      icon: Users,
+      description: 'Manage applicants'
     },
     {
       name: 'Settings',
@@ -64,7 +71,7 @@ const Sidebar = ({ isCollapsed, onToggleCollapse }) => {
         isMobileOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
       }`}>
         <div className="absolute inset-0 bg-black/50" onClick={() => setIsMobileOpen(false)} />
-        <div className={`absolute left-0 top-0 h-full w-64 bg-gray-900 border-r border-purple-800/30 transform transition-transform duration-300 ${
+        <div className={`absolute left-0 top-0 h-full w-64 bg-black border-r border-gray-800 transform transition-transform duration-300 ${
           isMobileOpen ? 'translate-x-0' : '-translate-x-full'
         }`}>
           <SidebarContent 
@@ -77,7 +84,7 @@ const Sidebar = ({ isCollapsed, onToggleCollapse }) => {
       </div>
 
       {/* Desktop sidebar */}
-      <div className={`hidden lg:block fixed left-0 top-0 h-full bg-gray-900 border-r border-purple-800/30 transition-all duration-300 ${
+      <div className={`hidden lg:block fixed left-0 top-0 h-full bg-black border-r border-gray-800 transition-all duration-300 ${
         isCollapsed ? 'w-16' : 'w-64'
       }`}>
         <SidebarContent 
@@ -95,10 +102,10 @@ const SidebarContent = ({ navigation, isActive, isCollapsed, onToggleCollapse })
   return (
     <div className="h-full flex flex-col">
       {/* Logo */}
-      <div className="p-6 border-b border-purple-800/30">
+      <div className="p-6">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 bg-gradient-to-br from-purple-600 to-pink-600 rounded-lg flex items-center justify-center">
-            <Building className="w-5 h-5 text-white" />
+            <Zap className="w-5 h-5 text-white" />
           </div>
           {!isCollapsed && (
             <div>
@@ -139,7 +146,7 @@ const SidebarContent = ({ navigation, isActive, isCollapsed, onToggleCollapse })
       </nav>
 
       {/* User section */}
-      <div className="p-4 border-t border-purple-800/30">
+      <div className="p-4">
         <div className="flex items-center gap-3 p-3 rounded-xl bg-gray-800/50">
           <div className="w-8 h-8 bg-gradient-to-br from-purple-600 to-pink-600 rounded-lg flex items-center justify-center flex-shrink-0">
             <User className="w-4 h-4 text-white" />
